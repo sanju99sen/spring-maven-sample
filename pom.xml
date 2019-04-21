@@ -145,9 +145,8 @@
             plugin are executed.
         -->
         <execution>
-            <id>post-unit-tests</id>
+            <id>post-unit-test</id>
             <goals>
-                <goal>post-unit-tests</goal>
                 <goal>test</goal>
             </goals>
             <configuration>
