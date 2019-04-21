@@ -76,8 +76,7 @@
                                         <failOnMissingWebXml>false</failOnMissingWebXml>
                                 </configuration>
                         </plugin>
-						
-	<plugin>
+<plugin>
     <groupId>org.jacoco</groupId>
     <artifactId>jacoco-maven-plugin</artifactId>
     <version>0.7.5.201505241946</version>
@@ -128,35 +127,14 @@
     <configuration>
         <!-- Sets the VM argument line used when unit tests are run. -->
         <argLine>${surefireArgLine}</argLine>
+        <!-- Skips unit tests if the value of skip.unit.tests property is true -->
+        <skipTests>${skip.unit.tests}</skipTests>
         <!-- Excludes integration tests when unit tests are run. -->
         <excludes>
             <exclude>**/IT*.java</exclude>
         </excludes>
     </configuration>
 </plugin>
-
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-failsafe-plugin</artifactId>
-    <version>2.15</version>
-    <executions>
-        <!--
-            Ensures that both integration-test and verify goals of the Failsafe Maven
-            plugin are executed.
-        -->
-        <execution>
-            <id>post-unit-test</id>
-            <goals>
-                <goal>test</goal>
-            </goals>
-            <configuration>
-                <!-- Sets the VM argument line used when integration tests are run. -->
-                <argLine>${failsafeArgLine}</argLine>
-            </configuration>
-        </execution>
-    </executions>
-</plugin>
-
 						
                 </plugins>
         </build>
