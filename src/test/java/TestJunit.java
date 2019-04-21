@@ -1,5 +1,6 @@
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import com.jeromejaglale.domain.Car;
 
 public class TestJunit {
 private String mycar = "Maruti";
