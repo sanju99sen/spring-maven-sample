@@ -27,7 +27,10 @@ pipeline {
         string (name: 'IMG_PULL_SECRET',  defaultValue: 'docker-reg-secret',                       description: 'The Kubernetes secret for the Docker registry (imagePullSecrets)')
 */
     }
-	
+
+	// In this example, all is built and run from the master
+	agent { node { label 'master' } }
+
 	    // Pipeline stages
     stages {
 
