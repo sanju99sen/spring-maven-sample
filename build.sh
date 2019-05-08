@@ -48,6 +48,21 @@ pushDockerImage () {
     docker push ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG} || errorExit "Pushing ${DOCKER_REPO}:${DOCKER_TAG} failed"
 }
 
+###### create kubernetes namespace in K8 cluster #####
+createNamespace () {
+echo -e "\Creating namespace ${KUBE_NAMESPACE} if needed"
+[ ! -z \"\$(kubectl get ns ${KUBE_NAMESPACE} -o name 2>/dev/null)\" ] || kubectl create ns ${KUBE_NAMESPACE}
+}
+
+#### deploying app to K8 cluster ###
+deploy_App () {
+echo -e "\nChecking K8 cluster info"
+kubectl cluster-info
+MANIFEST=`ls yaml`
+echo -e "\n Deploying resources into the cluster"
+kubectl apply -f ${MANIFEST} --${KUBE_NAMESPACE}
+}
+
 usage () {
     cat << END_USAGE
 ${SCRIPT_NAME} - Script for building the ACME web application, Docker image and Helm chart
@@ -91,6 +106,12 @@ processOptions () {
             --tag)
                 DOCKER_TAG=${2}; shift 2
             ;;
+	    --namespace)
+		KUBE_NAMESPACE=${2}; shift 2
+	    ;;
+	    --deploy)
+		K8_ENV=${2}; shift 2
+	    ;;
             -h | --help)
                 usage
             ;;
@@ -120,6 +141,14 @@ main () {
         # Attempt docker login
         dockerLogin
         pushDockerImage
+    fi
+    if [ ! -z "${KUBE_NAMESPACE}" ] ; then
+	# create namespace
+	createNamespace
+    fi
+    if [ ! -z "${K8_ENV}" ] ; then
+	#deploy app
+	deploy_App	
     fi
 }
 
