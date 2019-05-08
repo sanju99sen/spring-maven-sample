@@ -55,7 +55,7 @@ kubectl cluster-info
 
 ###### create kubernetes namespace in K8 cluster #####
 echo -e "\Creating namespace ${KUBE_NAMESPACE} if needed"
-[ ! -z \"\$(kubectl get ns ${KUBE_NAMESPACE} -o name 2>/dev/null)\" ] || kubectl create ns ${KUBE_NAMESPACE}
+[ ! -z kubectl get ns ${KUBE_NAMESPACE} -o name 2>/dev/null ] || kubectl create ns ${KUBE_NAMESPACE}
 
 MANIFEST=`ls yaml`
 echo -e "\n Deploying resources into the cluster"
