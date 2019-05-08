@@ -31,8 +31,9 @@ dockerLogin () {
 # Build Docker images
 buildDockerImage () {
     echo -e "\nBuilding ${DOCKER_REPO}:${DOCKER_TAG}"
-    mkdir -p ${BUILD_DIR}
+    mkdir -p ${BUILD_DIR}/site
     cp -v ${SCRIPT_DIR}/docker/Dockerfile ${BUILD_DIR}
+    cp -rv ${SCRIPT_DIR}/src/* ${BUILD_DIR}/site/
     echo -e "\nBuilding Docker image"
     echo -e "\n Running Command: docker build -t ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG} ${BUILD_DIR}"
     docker build -t ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG} ${BUILD_DIR}
