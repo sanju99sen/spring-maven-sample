@@ -57,7 +57,7 @@ kubectl cluster-info
 echo -e "\Creating namespace ${KUBE_NAMESPACE} if needed"
 [ ! -z kubectl get ns ${KUBE_NAMESPACE} -o name 2>/dev/null ] || kubectl create ns ${KUBE_NAMESPACE}
 
-MANIFEST=`ls yaml|tr "\n" " "`
+MANIFEST=`ls yaml/deployment/`
 echo -e "\n Deploying resources: ${MANIFEST} into the cluster"
 kubectl apply -f ${MANIFEST} --namespace=${KUBE_NAMESPACE}
 }

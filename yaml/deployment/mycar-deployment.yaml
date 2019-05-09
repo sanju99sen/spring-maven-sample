@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1 # for versions before 1.7.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: mycar-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mycar
+  template:
+    metadata:
+      labels:
+        app: mycar
+    spec:
+      containers:
+      - name: mycar
+        image: sanjoy-testdockerrepo.jfrog.io/demoweb:lts
+        ports:
+        - containerPort: 8080
