@@ -59,7 +59,7 @@ echo -e "\Creating namespace ${KUBE_NAMESPACE} if needed"
 
 MANIFEST=`ls yaml/deployment/`
 echo -e "\n Deploying resources: ${MANIFEST} into the cluster"
-kubectl apply -f ${MANIFEST} --namespace=${KUBE_NAMESPACE}
+kubectl apply -f yaml/deployment/${MANIFEST} --namespace=${KUBE_NAMESPACE}
 }
 
 
