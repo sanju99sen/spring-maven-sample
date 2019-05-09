@@ -14,6 +14,9 @@ spec:
     spec:
       containers:
       - name: mycar
-        image: sanjoy-testdockerrepo.jfrog.io/demoweb:lts
+        image: sanjoy-testdockerrepo.jfrog.io/mycar:dev
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
+      imagePullSecrets:
+      - name: dockerregcred
