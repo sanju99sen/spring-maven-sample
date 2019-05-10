@@ -4,7 +4,7 @@
 <html>
 <body bgcolor="#E6E6FA">
 
-	<h1>Add a Car</h1>
+	<h1>Add a car</h1>
 
 	<form:form method="POST" modelAttribute="car">
 		<p>
