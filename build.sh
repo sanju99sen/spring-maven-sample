@@ -75,7 +75,7 @@ echo -e "\Creating namespace ${KUBE_NAMESPACE} if needed"
 
 MANIFEST=`ls yaml/deployment/`
 echo -e "\n Running: sed "s/image: ${DOCKER_REG}\/${DOCKER_REPO}:${CURR_TAG}/image: ${DOCKER_REG}\/${DOCKER_REPO}:${DOCKER_TAG}/g" yaml/deployment/${MANIFEST}"
-sed "s/image: ${DOCKER_REG}\/${DOCKER_REPO}:${CURR_TAG}/image: ${DOCKER_REG}\/${DOCKER_REPO}:${DOCKER_TAG}/g" yaml/deployment/${MANIFEST} > a.yaml
+sed "s/image: ${DOCKER_REG}\/${DOCKER_REPO}:latest/image: ${DOCKER_REG}\/${DOCKER_REPO}:${DOCKER_TAG}/g" yaml/deployment/${MANIFEST} > a.yaml
 #mv a.yaml yaml/deployment/${MANIFEST}
 
 echo -e "\n Deploying resources: ${MANIFEST} into the cluster"
