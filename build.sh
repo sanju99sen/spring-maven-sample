@@ -28,6 +28,18 @@ dockerLogin () {
     fi
 }
 
+# Create Docker TAG
+generate_TAG () {
+dockerLogin
+CURR_TAG=`docker images|grep "${DOCKER_REG}/${DOCKER_REPO}"|awk '{print $2}'|head -1`
+if [ -z $CURR_TAG ] ; then
+CURR_TAG=0
+fi
+INCR=0.1
+NEW_TAG=`echo $CURR_TAG $INCR|awk '{print $1 + $2}'`
+DOCKER_TAG=$NEW_TAG
+}
+
 # Build Docker images
 buildDockerImage () {
     echo -e "\nBuilding ${DOCKER_REPO}:${DOCKER_TAG}"
@@ -36,7 +48,7 @@ buildDockerImage () {
     cp -rv ${SCRIPT_DIR}/target/* ${BUILD_DIR}/site/
     echo -e "\nBuilding Docker image"
     echo -e "\n Running Command: docker build -t ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG} ${BUILD_DIR}"
-    docker build -t ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG} ${BUILD_DIR}
+    ###docker build -t ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG} ${BUILD_DIR}
     #docker build -t ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG} ${BUILD_DIR} || errorExit "Building ${DOCKER_REPO}:${DOCKER_TAG} failed"
 }
 
@@ -58,6 +70,9 @@ echo -e "\Creating namespace ${KUBE_NAMESPACE} if needed"
 [ ! -z kubectl get ns ${KUBE_NAMESPACE} -o name 2>/dev/null ] || kubectl create ns ${KUBE_NAMESPACE}
 
 MANIFEST=`ls yaml/deployment/`
+sed "s/image: ${DOCKER_REG}\/${DOCKER_REPO}:${CURR_TAG}/image: ${DOCKER_REG}\/${DOCKER_REPO}:${DOCKER_TAG}/g" ${MANIFEST} > /tmp/a.yaml
+mv /tmp/a.yaml yaml/deployment/${MANIFEST}
+
 echo -e "\n Deploying resources: ${MANIFEST} into the cluster"
 kubectl apply -f yaml/deployment/${MANIFEST} --namespace=${KUBE_NAMESPACE}
 }
@@ -106,12 +121,12 @@ processOptions () {
             --tag)
                 DOCKER_TAG=${2}; shift 2
             ;;
-	    --namespace)
-		KUBE_NAMESPACE=${2}; shift 2
-	    ;;
-	    --deploy)
-	        DEPLOY="true"; shift	
-	    ;;
+            --namespace)
+                KUBE_NAMESPACE=${2}; shift 2
+            ;;
+            --deploy)
+                DEPLOY="true"; shift
+            ;;
             -h | --help)
                 usage
             ;;
@@ -135,16 +150,19 @@ main () {
 
     # Build and push docker images if needed
     if [ "${BUILD}" == "true" ]; then
+        generate_TAG
         buildDockerImage
     fi
     if [ "${PUSH}" == "true" ]; then
         # Attempt docker login
         dockerLogin
+        generate_TAG
         pushDockerImage
     fi
     if [ "${DEPLOY}" == "true" ] ; then
-	#deploy app
-	deploy_K8	
+        #deploy app
+        generate_TAG
+        deploy_K8
     fi
 }
 
