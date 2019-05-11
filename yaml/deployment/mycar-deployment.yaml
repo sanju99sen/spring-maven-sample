@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mycar
-        image: sanjoy-testdockerrepo.jfrog.io/mycar:v1
+        image: sanjoy-testdockerrepo.jfrog.io/mycar:0.7
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
