@@ -37,7 +37,11 @@ CURR_TAG=0
 fi
 INCR=0.1
 NEW_TAG=`echo $CURR_TAG $INCR|awk '{print $1 + $2}'`
-DOCKER_TAG=$NEW_TAG
+if [ "${BUILD}" == "true" ] ; then
+DOCKER_TAG=${NEW_TAG}
+else
+DOCKER_TAG=$CURR_TAG
+fi
 }
 
 # Build Docker images
