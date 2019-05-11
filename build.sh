@@ -74,11 +74,14 @@ echo -e "\Creating namespace ${KUBE_NAMESPACE} if needed"
 [ ! -z kubectl get ns ${KUBE_NAMESPACE} -o name 2>/dev/null ] || kubectl create ns ${KUBE_NAMESPACE}
 
 MANIFEST=`ls yaml/deployment/`
+echo -e "\n Running: sed "s/image: ${DOCKER_REG}\/${DOCKER_REPO}:${CURR_TAG}/image: ${DOCKER_REG}\/${DOCKER_REPO}:${DOCKER_TAG}/g" yaml/deployment/${MANIFEST}"
 sed "s/image: ${DOCKER_REG}\/${DOCKER_REPO}:${CURR_TAG}/image: ${DOCKER_REG}\/${DOCKER_REPO}:${DOCKER_TAG}/g" yaml/deployment/${MANIFEST} > a.yaml
-mv a.yaml yaml/deployment/${MANIFEST}
+#mv a.yaml yaml/deployment/${MANIFEST}
 
 echo -e "\n Deploying resources: ${MANIFEST} into the cluster"
-kubectl apply -f yaml/deployment/${MANIFEST} --namespace=${KUBE_NAMESPACE}
+###kubectl apply -f yaml/deployment/${MANIFEST} --namespace=${KUBE_NAMESPACE}
+kubectl apply -f a.yaml --namespace=${KUBE_NAMESPACE}
+
 }
 
 
