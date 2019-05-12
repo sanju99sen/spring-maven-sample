@@ -31,7 +31,8 @@ dockerLogin () {
 # Create Docker TAG
 generate_TAG () {
 dockerLogin
-CURR_TAG=`docker images|grep "${DOCKER_REG}/${DOCKER_REPO}"|awk '{print $2}'|head -1`
+#CURR_TAG=`docker images|grep "${DOCKER_REG}/${DOCKER_REPO}"|awk '{print $2}'|head -1`
+CURR_TAG=`kubectl get deployment --namespace=$KUBE_NAMESPACE --output=yaml|grep 'image:'|grep ${DOCKER_REPO}|awk -F":" '{print $3}'`
 if [ -z $CURR_TAG ] ; then
 CURR_TAG=0
 fi
