@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html>
-<body bgcolor="#E6E6FA">
+<body bgcolor="GREEN">
 
 	<h1>Add a Car</h1>
 
