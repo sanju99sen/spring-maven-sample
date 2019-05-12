@@ -38,11 +38,12 @@ CURR_TAG=0
 fi
 INCR=0.1
 NEW_TAG=`echo $CURR_TAG $INCR|awk '{print $1 + $2}'`
-if [ "${BUILD}" == "true" ] ; then
 DOCKER_TAG=${NEW_TAG}
-else
-DOCKER_TAG=$CURR_TAG
-fi
+#if [ "${BUILD}" == "true" ] ; then
+#DOCKER_TAG=${NEW_TAG}
+#else
+#DOCKER_TAG=$CURR_TAG
+#fi
 }
 
 # Build Docker images
@@ -52,7 +53,7 @@ buildDockerImage () {
     cp -v ${SCRIPT_DIR}/docker/Dockerfile ${BUILD_DIR}
     cp -rv ${SCRIPT_DIR}/target/* ${BUILD_DIR}/site/
     echo -e "\nBuilding Docker image"
-    echo -e "\n Running Command: docker build -t ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG} ${BUILD_DIR}"
+    echo -e "\nRunning Command: docker build -t ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG} ${BUILD_DIR}"
     docker build -t ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG} ${BUILD_DIR}
     #docker build -t ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG} ${BUILD_DIR} || errorExit "Building ${DOCKER_REPO}:${DOCKER_TAG} failed"
 }
