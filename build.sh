@@ -207,7 +207,3 @@ main () {
 
 processOptions $*
 main
-
-
-sanjoy@home MINGW64 /c/sanjoy/spring-maven-sample (master)
-
