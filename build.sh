@@ -140,6 +140,7 @@ processOptions () {
                 DEPLOY="true"; shift
             ;;
             --container)
+		KILL_CONTAINER="true";    
 	        ID=${2}; shift 2
 	    ;;
             -h | --help)
@@ -179,6 +180,9 @@ main () {
         generate_TAG
         deploy_K8
     fi
+    if [ "${KILL_CONTAINER}" == "true" ] ; then
+	 killContainer
+    fi	 
 }
 
 ############## Main
