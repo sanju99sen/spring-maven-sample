@@ -94,7 +94,7 @@ if [ $st -eq 0 ] ; then
 echo -e "\nKilling Conatiner ${ID}"
 	docker rm -f ${ID}
 fi	
-
+return 0;
 #[ -z "\$(docker ps -a | grep ${ID} 2>/dev/null)" ] || docker rm -f ${ID}
 }
 
