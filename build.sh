@@ -87,6 +87,7 @@ kubectl apply -f a.yaml --namespace=${KUBE_NAMESPACE}
 }
 
 killContainer () {
+echo -e "\nChecking existing container running state.."	
 docker ps -a|grep ${ID}
 st=$?
 if [ $st -eq 0 ] ; then
