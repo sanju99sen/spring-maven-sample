@@ -87,7 +87,14 @@ kubectl apply -f a.yaml --namespace=${KUBE_NAMESPACE}
 }
 
 killContainer () {
-[ -z "\$(docker ps -a | grep ${ID} 2>/dev/null)" ] || docker rm -f ${ID}
+docker ps -a|grep ${ID}
+st=$?
+if [ $st -eq 0 ] ; then
+echo -e "\nKilling Conatiner ${ID}"
+	docker rm -f ${ID}
+fi	
+
+#[ -z "\$(docker ps -a | grep ${ID} 2>/dev/null)" ] || docker rm -f ${ID}
 }
 
 usage () {
