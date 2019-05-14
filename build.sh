@@ -86,17 +86,21 @@ kubectl apply -f a.yaml --namespace=${KUBE_NAMESPACE}
 
 }
 
-killContainer () {
-echo -e "\nChecking existing container running state.."	
+TestContainer () {
+echo -e "\nChecking existing container running state.."
 docker ps -a|grep ${ID}
 st=$?
 if [ $st -eq 0 ] ; then
 echo -e "\nKilling Conatiner ${ID}"
-	docker rm -f ${ID}
-fi	
-return 0;
-#[ -z "\$(docker ps -a | grep ${ID} 2>/dev/null)" ] || docker rm -f ${ID}
+        docker rm -f ${ID}
+fi
+echo "Starting ${IMAGE_NAME} container"
+docker run -d --rm  --name ${ID} -p ${TEST_LOCAL_PORT}:80 ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG}
+##return 0;
+##[ -z "\$(docker ps -a | grep ${ID} 2>/dev/null)" ] || docker rm -f ${ID}
 }
+
+
 
 usage () {
     cat << END_USAGE
@@ -129,6 +133,12 @@ processOptions () {
             --push)
                 PUSH="true"; shift
             ;;
+			--deploy)
+                DEPLOY="true"; shift
+            ;;
+			--localtest)
+			    LOCAL_TEST="true"; shift
+			;;	
             --registry)
                 DOCKER_REG=${2}; shift 2
             ;;
@@ -144,13 +154,12 @@ processOptions () {
             --namespace)
                 KUBE_NAMESPACE=${2}; shift 2
             ;;
-            --deploy)
-                DEPLOY="true"; shift
-            ;;
             --container)
-		KILL_CONTAINER="true";    
-	        ID=${2}; shift 2
-	    ;;
+                CONTAINER_ID=${2}; shift 2
+            ;;
+            --localport)
+                TEST_LOCAL_PORT=${2}; shift 2
+            ;;
             -h | --help)
                 usage
             ;;
@@ -188,13 +197,17 @@ main () {
         generate_TAG
         deploy_K8
     fi
-    if [ "${KILL_CONTAINER}" == "true" ] ; then
-	 killContainer
-    fi	 
+    if [ "${LOCAL_TEST}" == "true" ] ; then
+         generate_TAG
+         TestContainer
+    fi
 }
 
 ############## Main
 
 processOptions $*
 main
+
+
+sanjoy@home MINGW64 /c/sanjoy/spring-maven-sample (master)
 
