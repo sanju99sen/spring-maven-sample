@@ -95,8 +95,8 @@ echo -e "\nKilling Conatiner ${CONTAINER_ID}"
         docker rm -f ${CONTAINER_ID}
 fi
 echo "Starting ${IMAGE_NAME} container"
-echo -e "\nRunning: docker run -d --rm  --name ${CONTAINER_ID} -p${TEST_LOCAL_PORT}:80 ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG}"
-docker run -d --rm  --name ${CONTAINER_ID} -p${TEST_LOCAL_PORT}:80 ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG}
+echo -e "\nRunning: docker run -d --rm  --name ${CONTAINER_ID} -p${TEST_LOCAL_PORT} ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG}"
+docker run -d --rm  --name ${CONTAINER_ID} -p${TEST_LOCAL_PORT} ${DOCKER_REG}/${DOCKER_REPO}:${DOCKER_TAG}
 ##return 0;
 ##[ -z "\$(docker ps -a | grep ${ID} 2>/dev/null)" ] || docker rm -f ${ID}
 }
