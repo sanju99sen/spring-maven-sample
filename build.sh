@@ -86,6 +86,9 @@ kubectl apply -f a.yaml --namespace=${KUBE_NAMESPACE}
 
 }
 
+killContainer () {
+[ -z "\$(docker ps -a | grep ${ID} 2>/dev/null)" ] || docker rm -f ${ID}
+}
 
 usage () {
     cat << END_USAGE
@@ -136,6 +139,9 @@ processOptions () {
             --deploy)
                 DEPLOY="true"; shift
             ;;
+            --container)
+	        ID=${2}; shift 2
+	    ;;
             -h | --help)
                 usage
             ;;
