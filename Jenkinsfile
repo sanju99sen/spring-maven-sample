@@ -167,7 +167,7 @@ sh "sh build.sh --deploy --registry ${DOCKER_REG} --docker_usr ${DOCKER_USR} --d
 stage ('Verify deployment status') {
 	steps {
 		echo "checking deployment status ..."
-		sleep (60)
+		sleep (180)
 			script { 
 				ready = sh(returnStdout: true, script: 'kubectl get deployment --namespace=dev|grep mycar|awk \'{print $2}\'|cut -d"/" -f1')
 				total = sh(returnStdout: true, script: 'kubectl get deployment --namespace=dev|grep mycar|awk \'{print $2}\'|cut -d"/" -f2')
